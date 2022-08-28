@@ -21,15 +21,15 @@ module.exports = {
     addUrl: (data) => {
         return new Promise(async (resolve, reject) => {
             let shortLink = await id
-            collection.insertOne({url: data, short: shortLink})
-            resolve(shortLink)
+            const insertLink = collection.insertOne({ url: data, short: shortLink })
+            resolve({ insertLink, shortLink })
         })
     },
 
     getUrl: (data) => {
         return new Promise(async (resolve, reject) => {
-            const findResult = await collection.find({ short: data }).toArray()
-            resolve(findResult[0].url)
+            const result = await collection.find({short: data}).toArray()
+            resolve(result[0].url)
         })
     }
 }

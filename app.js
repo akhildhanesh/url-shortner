@@ -6,15 +6,17 @@ const app = express()
 
 const PORT = process.env.PORT || 3000
 
-app.get('/add', (req, res) => {
+const domain =  'http://localhost:3000/'
+
+app.get('/add/68ac2009-8bb1-4cb8-9ffe-4dca3d6dee51', (req, res) => {
     db.addUrl(req.query.url)
-        .then(shortLink => res.json({url: shortLink}))
+        .then(data => res.json({url: data.shortLink}))
         .catch(err => console.log(err))
 })
 
 app.get('/:url', (req, res) => {
     db.getUrl(req.params.url)
-        .then(result => res.redirect(result))
+        .then(result => res.redirect(domain + result))
         .catch(err => console.log(err))
 })
 
