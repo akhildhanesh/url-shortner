@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000
 
 app.get('/add', (req, res) => {
     db.addUrl(req.query.url)
-        .then(result => res.send(result))
+        .then(shortLink => res.json({url: shortLink}))
         .catch(err => console.log(err))
 })
 

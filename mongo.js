@@ -1,22 +1,15 @@
 const { MongoClient } = require('mongodb');
 const { id } = require('./id')
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
 
-// Database Name
 const dbName = 'shortner';
 const db = client.db(dbName)
 const collection = db.collection('urls')
 
 async function main() {
-    // Use connect method to connect to the server
     await client.connect();
-    console.log('Connected successfully to server');
-    
-    // the following code examples can be pasted here...
-
     return 'DataBase Connected';
 }
 
@@ -27,8 +20,9 @@ main()
 module.exports = {
     addUrl: (data) => {
         return new Promise(async (resolve, reject) => {
-            const insertResult = collection.insertOne({url: data, short: await id})
-            resolve(insertResult)
+            let shortLink = await id
+            collection.insertOne({url: data, short: shortLink})
+            resolve(shortLink)
         })
     },
 
