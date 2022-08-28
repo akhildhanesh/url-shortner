@@ -20,7 +20,7 @@ main()
 module.exports = {
     addUrl: (data) => {
         return new Promise(async (resolve, reject) => {
-            let shortLink = await id
+            let shortLink = await id()
             await collection.insertOne({ url: data, short: shortLink })
             resolve(shortLink)
         })
@@ -29,7 +29,7 @@ module.exports = {
     getUrl: (data) => {
         return new Promise(async (resolve, reject) => {
             const result = await collection.find({ short: data }).toArray()
-            resolve(result[0][url])
+            resolve(result)
         })
     }
 }
