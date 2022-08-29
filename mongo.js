@@ -1,6 +1,6 @@
 'use strict'
 
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { id } = require('./id')
 
 const url = 'mongodb://127.0.0.1:27017/';
@@ -9,6 +9,7 @@ const client = new MongoClient(url);
 const dbName = 'shortner';
 const db = client.db(dbName)
 const collection = db.collection('urls')
+
 
 async function main() {
     await client.connect();
@@ -22,9 +23,10 @@ main()
 module.exports = {
     addUrl: (data) => {
         return new Promise(async (resolve, reject) => {
-            let shortLink = await id()
-            await collection.insertOne({ url: data, short: shortLink })
-            resolve(shortLink)
+            // let shortLink = await id()
+            let sl = ObjectId()
+            await collection.insertOne({ _id: sl, url: data, short: sl.toString().slice(15,) })
+            resolve(sl.toString().slice(15,))
         })
     },
 
