@@ -3,6 +3,14 @@ const db = require('./mongo')
 const express = require('express')
 const app = express()
 
+const { createClient } = require('redis')
+
+const client = createClient();
+
+client.on('error', (err) => console.log('Redis Client Error', err))
+
+client.connect()
+
 
 const PORT = process.env.PORT || 3000
 
@@ -14,9 +22,14 @@ app.get('/add/68ac2009-8bb1-4cb8-9ffe-4dca3d6dee51', (req, res) => {
         .catch(err => console.log(err))
 })
 
-app.get('/:url', (req, res) => {
+app.get('/:url', async (req, res) => {
+    let data = await client.get(req.params.url)
+    if (data != null) return res.redirect(data)
     db.getUrl(req.params.url)
-        .then(result => res.redirect(result[0]['url']))
+        .then(result => {
+            res.redirect(result[0]['url'])
+            client.set(req.params.url, result[0]['url'], 'EX', 60 * 60 * 24)
+        })
         .catch(err => console.log(err))
 })
 
