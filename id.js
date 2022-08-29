@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = {
     id: () => {
         const d = new Date()
