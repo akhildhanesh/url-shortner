@@ -16,7 +16,7 @@ app.get('/add/68ac2009-8bb1-4cb8-9ffe-4dca3d6dee51', (req, res) => {
 
 app.get('/:url', (req, res) => {
     db.getUrl(req.params.url)
-        .then(result => res.json(result))
+        .then(result => res.redirect(result[result.length - 1]['url']))
         .catch(err => console.log(err))
 })
 
